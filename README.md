@@ -1,43 +1,98 @@
-🌿 ReFood — Product Backlog
-> **Redução do Desperdício de Alimentos** | Engenharia de Software 2026  
-> Equipe: Arthur Brasil · Guilherme Luiz · Henrique Borges · Lucas Lonardi
----
-📊 Resumo
-User Stories	Prioridade Alta	Prioridade Média	Prioridade Baixa	Story Points	Sprints
-14	6	5	3	58 SP	4
----
-📋 User Stories
-ID	User Story	Critério de Aceitação	Req.	Prioridade	SP	Sprint	Origem	Status
-US-01	Como usuário, quero cadastrar um alimento informando nome, categoria, quantidade, unidade e data de validade para controlar meu estoque.	Todos os campos obrigatórios validados, item aparece na listagem imediatamente	RF03	🔴 Alta	8	Sprint 1	Entrevista	⬜ A Fazer
-US-02	Como novo usuário, quero me cadastrar com nome, e-mail e senha para ter minha conta individual no ReFood.	Cadastro salvo, e-mail único, senha criptografada, feedback de erro em campos inválidos	RF01	🔴 Alta	5	Sprint 1	Entrevista	⬜ A Fazer
-US-03	Como usuário cadastrado, quero fazer login com e-mail e senha para acessar meus dados com segurança.	Login funcional, sessão mantida, mensagem de erro em dados inválidos	RF02	🔴 Alta	3	Sprint 1	Entrevista	⬜ A Fazer
-US-04	Como usuário, quero recuperar minha senha por e-mail para não perder acesso à minha conta.	E-mail enviado em até 1 min, link de redefinição funcional por 24h	RF02	🟡 Média	3	Sprint 1	Questionário	⬜ A Fazer
-US-05	Como usuário, quero visualizar a lista completa dos meus alimentos, podendo filtrar por categoria e ordenar por validade, para encontrar itens rapidamente.	Filtros funcionais, badges de status por cor, ordenação correta por data	RF06	🔴 Alta	5	Sprint 2	Entrevista	⬜ A Fazer
-US-06	Como usuário, quero atualizar a data de validade de um alimento para corrigir informações incorretas.	Edição salva corretamente, data refletida nos alertas em tempo real	RF04	🔴 Alta	3	Sprint 2	Questionário	⬜ A Fazer
-US-07	Como usuário, quero editar os dados de um alimento cadastrado para manter as informações sempre corretas.	Todos os campos editáveis, alterações persistem após fechar o app	RF05	🟡 Média	3	Sprint 2	Análise Similares	⬜ A Fazer
-US-08	Como usuário, quero excluir um alimento do estoque para remover itens consumidos ou descartados.	Confirmação antes de deletar, item removido da lista imediatamente	RF05	🟡 Média	2	Sprint 2	Análise Similares	⬜ A Fazer
-US-09	Como usuário, quero receber notificações automáticas quando um alimento estiver próximo ao vencimento para não perder prazos.	Notificação disparada conforme antecedência configurada, push notification funcionando em Android e iOS	RF07	🔴 Alta	8	Sprint 3	Entrevista	⬜ A Fazer
-US-10	Como usuário, quero configurar com quantos dias de antecedência quero ser alertado (1 a 7 dias) para personalizar minha experiência.	Slider/seletor de 1 a 7 dias, configuração salva por alimento, padrão 3 dias	RF07	🟡 Média	3	Sprint 3	Questionário	⬜ A Fazer
-US-11	Como usuário, quero criar uma lista de compras com itens em falta ou com estoque baixo para organizar minhas compras.	Adicionar/remover itens da lista, marcar como comprado, lista persiste entre sessões	RF08	🟡 Média	5	Sprint 3	Análise Similares	⬜ A Fazer
-US-12	Como usuário, quero visualizar um relatório com os alimentos que venceram ou foram descartados para entender meu padrão de desperdício.	Relatório por período, gráfico por categoria, ranking dos mais desperdiçados	RF09	🔴 Alta	8	Sprint 4	Entrevista	⬜ A Fazer
-US-13	Como usuário, quero registrar um alimento como "consumido" ou "descartado" para que o sistema contabilize no relatório.	Ação registrada com data e tipo, impacto visível no relatório do período	RF09	🟢 Baixa	3	Sprint 4	Entrevista	⬜ A Fazer
-US-14	Como usuário, quero compartilhar minha lista de compras com outros membros da casa para facilitar as compras em família.	Lista compartilhável via link ou contato, atualizações em tempo real para todos	RF08	🟢 Baixa	5	Sprint 4	Análise Similares	⬜ A Fazer
----
-🚀 Planejamento de Sprints
-Sprint	Foco	User Stories	Story Points	Observações
-Sprint 1	Base do Sistema	US-01, US-02, US-03, US-04	19 SP	Autenticação, cadastro de usuários e primeiro cadastro de alimento
-Sprint 2	Gestão do Estoque	US-05, US-06, US-07, US-08	13 SP	Listagem com filtros, edição e exclusão de alimentos
-Sprint 3	Alertas e Lista	US-09, US-10, US-11	16 SP	Notificações push configuráveis e lista de compras
-Sprint 4	Relatórios e Extras	US-12, US-13, US-14	16 SP	Relatório de desperdício, registro de consumo/descarte e compartilhamento
-TOTAL			58 SP	
----
-🔒 Requisitos Não Funcionais
-ID	Requisito	Descrição	Critério de Aceitação	Prioridade	Categoria
-RNF-01	Usabilidade	Interface simples e intuitiva, sem necessidade de treinamento prévio	Novos usuários completam cadastro e primeiro alimento em até 3 minutos sem ajuda externa	🔴 Alta	UX
-RNF-02	Desempenho	Tempo de resposta máximo de 2 segundos nas operações principais	Cadastro, listagem e alertas respondem em ≤ 2s em conexão 4G mínima	🔴 Alta	Performance
-RNF-03	Disponibilidade	Sistema disponível 24/7 com mínimo de 99% de uptime	Downtime máximo de 7h/mês, monitorado por ferramenta externa de uptime	🔴 Alta	Infraestrutura
-RNF-04	Segurança (LGPD)	Dados protegidos por criptografia e controle de acesso conforme LGPD	Senhas com hash bcrypt, dados em trânsito via HTTPS/TLS, conformidade LGPD Lei 13.709/2018	🔴 Alta	Segurança
-RNF-05	Portabilidade	Compatível com Android, iOS e navegadores web desktop e notebook	Testado em Android 10+, iOS 14+, Chrome/Firefox/Safari nas versões mais recentes	🟡 Média	Compatibilidade
-RNF-06	Manutenibilidade	Código documentado com separação de responsabilidades	Cobertura de comentários ≥ 70%, arquitetura MVC documentada no repositório	🟢 Baixa	Qualidade
----
-Backlog gerado para a disciplina de Engenharia de Software 2026.
+🌿 ReFood
+Menos desperdício, mais futuro.
+
+Aplicativo mobile para redução do desperdício de alimentos no cotidiano, por meio do controle inteligente do estoque doméstico, monitoramento de prazos de validade, alertas preventivos de vencimento, sugestões de receitas e relatórios de desperdício.
+
+Projeto acadêmico da disciplina de Engenharia de Software — 2026.
+
+👥 Integrantes e responsabilidades
+Integrante	Responsabilidade
+Arthur Brasil	Firebase + PostgreSQL (configuração de banco e serviços de API)
+Guilherme Luiz Almeida	React Native + Expo (telas mobile, navegação e tema)
+Lucas Lonardi	Node.js + Express (server, rotas, controllers e models)
+Henrique Borges	GitHub + Railway (repositório, README e deploy)
+✅ Conceito de Pronto (Definition of Done)
+Uma User Story só é considerada pronta quando:
+
+Backend implementado e funcionando
+Frontend implementado e funcionando
+Critério de aceitação da User Story validado
+Validado por outro membro da equipe
+🛠️ Stack do projeto
+Mobile: React Native + Expo
+Backend: Node.js + Express
+Banco de dados: PostgreSQL (hospedado no Railway, com SSL)
+Autenticação e notificações: Firebase (Auth + Cloud Messaging)
+API de receitas: TheMealDB
+💻 Como montar o ambiente de desenvolvimento
+1. Pré-requisitos
+Instale na máquina:
+
+Node.js (versão LTS)
+Git
+VS Code
+App Expo Go no celular (Android ou iOS)
+2. Clonar o repositório
+bash
+git clone https://github.com/borgeshenriq/REFOOD.git
+cd REFOOD
+3. Configurar o backend
+Dentro da pasta do backend, crie um arquivo .env:
+
+DATABASE_URL=postgresql://USUARIO:SENHA@HOST:PORTA/BANCO
+PORT=3000
+A DATABASE_URL é a connection string do Railway. A conexão exige SSL.
+
+Instale as dependências:
+
+bash
+npm install
+4. Configurar o mobile
+Dentro da pasta mobile, crie um arquivo .env:
+
+API_URL=http://SEU_IPV4:3000
+⚠️ Atenção (laboratório): o IPv4 da máquina muda a cada sessão. Sempre confira o IP atual e atualize o API_URL no .env do mobile (e o BASE_URL no api.js) antes de rodar.
+
+Instale as dependências:
+
+bash
+npm install
+5. Configurar o Firebase
+O arquivo de configuração do Firebase (firebase.js) já está no projeto. Garanta que as credenciais estão preenchidas para que login e notificações funcionem.
+
+▶️ Como executar o projeto
+Backend
+bash
+cd backend
+npm start
+O servidor sobe em http://localhost:3000.
+
+Mobile
+bash
+cd mobile
+npx expo start
+Escaneie o QR Code com o app Expo Go no celular.
+
+O celular e o PC precisam estar na mesma rede Wi-Fi.
+
+🔄 Como atualizar o GitHub
+📌 Regra de ouro: sempre dê git pull antes de qualquer push, para evitar conflitos com os colegas.
+
+bash
+# 1. Sempre puxe as alterações dos colegas primeiro
+git pull origin main
+
+# 2. Adicione apenas os arquivos da SUA parte
+git add caminho/do/seu/arquivo
+
+# 3. Faça o commit com uma mensagem clara
+git commit -m "descrição clara do que foi feito"
+
+# 4. Suba para o repositório
+git push origin main
+🧪 Problema de credencial no laboratório
+Se aparecer erro de credencial (PC compartilhado já logado com outra conta), force o seu usuário na URL do remote:
+
+bash
+git remote set-url origin https://SEU_USUARIO@github.com/borgeshenriq/REFOOD.git
+🌿 ReFood — Engenharia de Software · 2026

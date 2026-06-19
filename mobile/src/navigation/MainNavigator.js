@@ -1,9 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text } from 'react-native';
-import HomeScreen from '../screens/HomeScreen';
-import AlertasScreen from '../screens/AlertasScreen';
-import RelatorioScreen from '../screens/RelatorioScreen';
+import HomeScreen         from '../screens/HomeScreen';
+import AlertasScreen      from '../screens/AlertasScreen';
+import ListaComprasScreen from '../screens/ListaComprasScreen';
+import ReceitasScreen     from '../screens/ReceitasScreen';
+import RelatorioScreen    from '../screens/RelatorioScreen';
 import { cores } from '../theme';
 
 const Tab = createBottomTabNavigator();
@@ -17,23 +19,21 @@ export default function MainNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-      tabBarStyle: {
-  backgroundColor: '#fff',
-  borderTopWidth: 1,
-  borderTopColor: '#DCE8E0',
-  paddingBottom: 6,
-  paddingTop: 4,
-  height: 58,
-},
-tabBarIconStyle: {
-  marginBottom: 0,
-},
-tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
-      }}
-    >
-      <Tab.Screen name="Início"     component={HomeScreen}     options={{ tabBarIcon: ({ focused }) => <Icone emoji="🏠" focused={focused} /> }} />
-      <Tab.Screen name="Alertas"    component={AlertasScreen}  options={{ tabBarIcon: ({ focused }) => <Icone emoji="🔔" focused={focused} /> }} />
-      <Tab.Screen name="Relatórios" component={RelatorioScreen} options={{ tabBarIcon: ({ focused }) => <Icone emoji="📊" focused={focused} /> }} />
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          borderTopWidth: 1,
+          borderTopColor: '#DCE8E0',
+          paddingBottom: 6,
+          paddingTop: 4,
+          height: 58,
+        },
+        tabBarLabelStyle: { fontSize: 10, fontWeight: '600' },
+      }}>
+      <Tab.Screen name="Início"     component={HomeScreen}         options={{ tabBarIcon: ({ focused }) => <Icone emoji="🏠" focused={focused} /> }} />
+      <Tab.Screen name="Alertas"    component={AlertasScreen}      options={{ tabBarIcon: ({ focused }) => <Icone emoji="🔔" focused={focused} /> }} />
+      <Tab.Screen name="Receitas"   component={ReceitasScreen}     options={{ tabBarIcon: ({ focused }) => <Icone emoji="🍳" focused={focused} /> }} />
+      <Tab.Screen name="Compras"    component={ListaComprasScreen} options={{ tabBarIcon: ({ focused }) => <Icone emoji="🛒" focused={focused} /> }} />
+      <Tab.Screen name="Relatórios" component={RelatorioScreen}    options={{ tabBarIcon: ({ focused }) => <Icone emoji="📊" focused={focused} /> }} />
     </Tab.Navigator>
   );
 }

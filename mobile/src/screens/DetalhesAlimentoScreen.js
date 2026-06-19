@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { cores, espacamento, raio, tipografia } from '../theme';
-import api from '../services/api';
+import { alimentosService, registrosService } from '../services/api';
 
 const EMOJI_CATEGORIA = {
   'Frutas': '🍎', 'Legumes': '🥦', 'Vegetais': '🥦', 'Carnes': '🥩',
@@ -24,13 +24,11 @@ const CATEGORIAS = [
 const UNIDADES = ['kg', 'g', 'L', 'ml', 'un', 'cx', 'pct'];
 
 function statusValidade(dataValidade) {
-  const hoje = new Date();
-  const validade = new Date(dataValidade);
-  const diff = Math.ceil((validade - hoje) / (1000 * 60 * 60 * 24));
-  if (diff < 0)  return { label: 'Vencido',  cor: cores.acentoPerigo, bg: '#FDECEA' };
-  if (diff <= 3) return { label: `${diff}d`,  cor: cores.acento,       bg: '#FEF3E8' };
-  if (diff <= 7) return { label: `${diff}d`,  cor: '#D4AC0D',          bg: '#FEF9E7' };
-  return          { label: `${diff}d`,        cor: cores.primariaClara, bg: cores.primariaFundo };
+  const diff = Math.ceil((new Date(dataValidade) - new Date()) / (1000 * 60 * 60 * 24));
+  if (diff < 0)  return { label: 'Vencido', cor: cores.acentoPerigo, bg: '#FDECEA' };
+  if (diff <= 3) return { label: `${diff}d`, cor: cores.acento,       bg: '#FEF3E8' };
+  if (diff <= 7) return { label: `${diff}d`, cor: '#D4AC0D',          bg: '#FEF9E7' };
+  return          { label: `${diff}d`,       cor: cores.primariaClara, bg: cores.primariaFundo };
 }
 
 function formatarData(data) {
@@ -50,9 +48,9 @@ function dataParaISO(valor) {
 
 export default function DetalhesAlimentoScreen({ route, navigation }) {
   const { alimento } = route.params;
-  const [editando, setEditando]     = useState(false);
-  const [salvando, setSalvando]     = useState(false);
-  const [form, setForm]             = useState({
+  const [editando, setEditando] = useState(false);
+  const [salvando, setSalvando] = useState(false);
+  const [form, setForm] = useState({
     nome:          alimento.nome,
     categoria:     alimento.categoria,
     quantidade:    String(alimento.quantidade),
@@ -61,56 +59,81 @@ export default function DetalhesAlimentoScreen({ route, navigation }) {
   });
 
   const atualizar = (campo, valor) => setForm((prev) => ({ ...prev, [campo]: valor }));
-
   const status = statusValidade(alimento.data_validade);
 
   const handleSalvar = async () => {
     setSalvando(true);
     try {
-      await api.put(`/alimentos/${alimento.id}`, {
+      await alimentosService.atualizar(alimento.id, {
         ...form,
-        quantidade: Number(form.quantidade),
+        quantidade:    Number(form.quantidade),
         data_validade: dataParaISO(form.data_validade),
       });
       Alert.alert('✅ Salvo!', 'Alimento atualizado com sucesso.', [
         { text: 'OK', onPress: () => { setEditando(false); navigation.goBack(); } },
       ]);
-    } catch (err) {
+    } catch {
       Alert.alert('Erro', 'Não foi possível salvar.');
     } finally {
       setSalvando(false);
     }
   };
 
-  const handleExcluir = async () => {
-  const confirmado = window.confirm(`Tem certeza que deseja excluir "${alimento.nome}"?`);
-  if (!confirmado) return;
-  try {
-    await api.delete(`/alimentos/${alimento.id}`);
-    navigation.goBack();
-  } catch (err) {
-    window.alert('Erro: Não foi possível excluir.');
-  }
-};
+  const handleExcluir = () => {
+    Alert.alert(
+      'Excluir alimento',
+      `Tem certeza que deseja excluir "${alimento.nome}"?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Excluir', style: 'destructive',
+          onPress: async () => {
+            try {
+              await alimentosService.excluir(alimento.id);
+              navigation.goBack();
+            } catch {
+              Alert.alert('Erro', 'Não foi possível excluir.');
+            }
+          },
+        },
+      ]
+    );
+  };
 
-  const handleAcao = async (acao) => {
-  const confirmado = window.confirm(`Registrar "${alimento.nome}" como ${acao}?`);
-  if (!confirmado) return;
-  try {
-    await api.delete(`/alimentos/${alimento.id}`);
-    window.alert(`✅ Alimento marcado como ${acao}!`);
-    navigation.goBack();
-  } catch (err) {
-    console.error('Erro:', err?.response?.data || err.message);
-    window.alert('Erro: Não foi possível registrar.');
-  }
-};
+  const handleAcao = (tipo) => {
+    const label = tipo === 'consumido' ? 'Consumido' : 'Descartado';
+    Alert.alert(
+      `${label}`,
+      `Registrar "${alimento.nome}" como ${tipo}?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Confirmar',
+          onPress: async () => {
+            try {
+              await registrosService.registrar({
+                alimento_id:         alimento.id,
+                alimento_nome:       alimento.nome,
+                alimento_categoria:  alimento.categoria,
+                tipo,
+                preco_estimado:      0,
+              });
+              Alert.alert('✅ Registrado!', `${alimento.nome} marcado como ${tipo}.`, [
+                { text: 'OK', onPress: () => navigation.goBack() },
+              ]);
+            } catch (err) {
+              Alert.alert('Erro', 'Não foi possível registrar.');
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <SafeAreaView style={s.segura} edges={['top']}>
       <ScrollView contentContainerStyle={s.conteudo} showsVerticalScrollIndicator={false}>
 
-        {/* Cabeçalho */}
         <View style={s.cabecalho}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={s.voltarBtn}>
             <Text style={s.voltarTexto}>← Início</Text>
@@ -120,7 +143,6 @@ export default function DetalhesAlimentoScreen({ route, navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Card principal */}
         <View style={s.cardPrincipal}>
           <View style={s.cardTopo}>
             <View style={s.emojiContainer}>
@@ -139,7 +161,6 @@ export default function DetalhesAlimentoScreen({ route, navigation }) {
           </View>
         </View>
 
-        {/* Informações */}
         <View style={s.infoCard}>
           <Text style={s.infoTitulo}>INFORMAÇÕES</Text>
 
@@ -147,7 +168,8 @@ export default function DetalhesAlimentoScreen({ route, navigation }) {
             <Text style={s.infoLabel}>Data de Validade</Text>
             {editando
               ? <TextInput style={s.inputInfo} value={form.data_validade}
-                  onChangeText={(v) => atualizar('data_validade', v)} placeholder="DD/MM/AAAA" keyboardType="numeric" maxLength={10} />
+                  onChangeText={(v) => atualizar('data_validade', v)}
+                  placeholder="DD/MM/AAAA" keyboardType="numeric" maxLength={10} />
               : <Text style={s.infoValor}>{form.data_validade}</Text>
             }
           </View>
@@ -194,7 +216,6 @@ export default function DetalhesAlimentoScreen({ route, navigation }) {
           )}
         </View>
 
-        {/* Ações */}
         {!editando ? (
           <View style={s.acoesRow}>
             <TouchableOpacity style={[s.acaoBotao, { backgroundColor: '#FDECEA', borderColor: cores.acentoPerigo }]}
@@ -227,8 +248,8 @@ export default function DetalhesAlimentoScreen({ route, navigation }) {
           </View>
         )}
 
-        {/* Adicionar à lista de compras */}
-        <TouchableOpacity style={s.botaoLista} activeOpacity={0.8}>
+        <TouchableOpacity style={s.botaoLista}
+          onPress={() => navigation.navigate('Main', { screen: 'Compras' })} activeOpacity={0.8}>
           <Text style={s.botaoListaTexto}>+ Adicionar à lista de compras</Text>
         </TouchableOpacity>
 

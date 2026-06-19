@@ -15,7 +15,8 @@
     "react-native": "0.85.3",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "4.25.2",
-    "react-native-web": "^0.21.2"
+    "react-native-web": "^0.21.2",
+    "expo-notifications": "~0.29.0"
   },
   "scripts": {
     "start": "expo start",
